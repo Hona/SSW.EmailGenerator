@@ -4,6 +4,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{332D79F2-11E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailGenerator.WebUI", "src\EmailGenerator.WebUI\EmailGenerator.WebUI.csproj", "{54E976FB-4698-4749-8AFD-6E622D2C91B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailGenerator.WebAPI", "src\EmailGenerator.WebAPI\EmailGenerator.WebAPI.csproj", "{6433F6DB-62C2-4245-9AB5-4E1A2B4BD575}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailGenerator.WebApiClient", "src\EmailGenerator.WebApiClient\EmailGenerator.WebApiClient.csproj", "{187296B3-34CF-4616-910D-D0A250E6E312}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -11,11 +15,21 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{54E976FB-4698-4749-8AFD-6E622D2C91B7} = {332D79F2-11EF-46B0-BCCF-D96463A23EEA}
+		{6433F6DB-62C2-4245-9AB5-4E1A2B4BD575} = {332D79F2-11EF-46B0-BCCF-D96463A23EEA}
+		{187296B3-34CF-4616-910D-D0A250E6E312} = {332D79F2-11EF-46B0-BCCF-D96463A23EEA}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{54E976FB-4698-4749-8AFD-6E622D2C91B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{54E976FB-4698-4749-8AFD-6E622D2C91B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54E976FB-4698-4749-8AFD-6E622D2C91B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54E976FB-4698-4749-8AFD-6E622D2C91B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6433F6DB-62C2-4245-9AB5-4E1A2B4BD575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6433F6DB-62C2-4245-9AB5-4E1A2B4BD575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6433F6DB-62C2-4245-9AB5-4E1A2B4BD575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6433F6DB-62C2-4245-9AB5-4E1A2B4BD575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{187296B3-34CF-4616-910D-D0A250E6E312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{187296B3-34CF-4616-910D-D0A250E6E312}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{187296B3-34CF-4616-910D-D0A250E6E312}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{187296B3-34CF-4616-910D-D0A250E6E312}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

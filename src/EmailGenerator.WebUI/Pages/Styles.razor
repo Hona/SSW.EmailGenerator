@@ -1,0 +1,54 @@
+﻿@page "/styles"
+
+@using EmailGenerator.WebApiClient
+@using System.Text.Json
+
+@inject StylesClient _stylesClient
+
+<PageTitle>Styles</PageTitle>
+
+<MudText Typo="Typo.h3">Styles</MudText>
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" />
+}
+else
+{
+    <MudGrid Spacing="4" Justify="Justify.Center">
+        @foreach (var style in _styles)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(style));
+            <MudItem>
+                <MudCard>
+                    <MudCardHeader>
+                        @style.DisplayName
+                    </MudCardHeader>
+                    <MudCardContent>
+                        Font: @style.Font
+                        Heading Color: @style.HeadingColor
+                        Heading Size: @style.HeadingSize
+                        Text Color: @style.TextColor
+                        Text Size: @style.TextSize
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+@code {
+    private bool _loading;
+
+    private ICollection<Style>? _styles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        
+        _styles = await _stylesClient.GetAsync();
+
+        _loading = false;
+    }
+
+}
