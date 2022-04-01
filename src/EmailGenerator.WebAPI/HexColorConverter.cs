@@ -1,15 +1,25 @@
 ﻿using System.Drawing;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace EmailGenerator.WebAPI;
 
-public class HexColorConverter : JsonConverter<Color>
+public class HexColorConverter : JsonConverter
 {
-    public override Color Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-        ColorTranslator.FromHtml(reader.GetString());
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    {
+        var color = (Color) value;
+        writer.WriteValue(
+            "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2").ToLower());    }
 
-    public override void Write(Utf8JsonWriter writer, Color value, JsonSerializerOptions options) =>
-        writer.WriteStringValue(
-            "#" + value.R.ToString("X2") + value.G.ToString("X2") + value.B.ToString("X2").ToLower());
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    {
+        // Convert from hex to Color
+        var hex = (string) reader.Value;
+        var color = ColorTranslator.FromHtml(hex);
+        return color;
+    }
+
+    public override bool CanConvert(Type objectType) => objectType == typeof(Color);
 }

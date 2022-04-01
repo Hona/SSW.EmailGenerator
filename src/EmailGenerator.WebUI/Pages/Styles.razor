@@ -4,14 +4,20 @@
 @using System.Text.Json
 
 @inject StylesClient _stylesClient
+@inject NavigationManager _navigationManager
+@inject IJSRuntime _jsRuntime
+@inject IDialogService _dialogService
 
 <PageTitle>Styles</PageTitle>
 
-<MudText Typo="Typo.h3">Styles</MudText>
+<div class="d-flex justify-space-between" style="width: 100%">
+    <MudText Typo="Typo.h3">Styles</MudText>
+    <MudFab StartIcon="@Icons.Filled.Add" Color="Color.Primary" Href="/styles/create"/>
+</div>
 
 @if (_loading)
 {
-    <MudProgressLinear Color="Color.Primary" />
+    <MudProgressLinear Indeterminate Color="MudBlazor.Color.Primary" />
 }
 else
 {
@@ -19,25 +25,33 @@ else
         @foreach (var style in _styles)
         {
             Console.WriteLine(JsonSerializer.Serialize(style));
-            <MudItem>
+            <MudItem Style="width: 300px">
                 <MudCard>
                     <MudCardHeader>
                         @style.DisplayName
                     </MudCardHeader>
-                    <MudCardContent>
-                        Font: @style.Font
-                        Heading Color: @style.HeadingColor
-                        Heading Size: @style.HeadingSize
-                        Text Color: @style.TextColor
-                        Text Size: @style.TextSize
+                    <MudCardContent Style="@("font-family: " + style.Font + ";")">
+                        <div style="@($"font-size: {style.HeadingSize}px; color: {style.HeadingColor}; font-weight: bold; border: none; padding-bottom: 6px")">
+                            Lorem ut lobortis dignissim tempor
+                        </div>
+                        <div style="@($"font-size: {style.TextSize}px; color: {style.TextColor}"); border: none;">
+                            Tempor dolor elitr vel aliquyam minim et et erat. Sadipscing duo erat sit justo wisi facilisis vero consetetur ea voluptua duo et. Sed consequat sit. Elitr at invidunt rebum dolor nonumy dolor dolor blandit ea diam aliquyam kasd et eos dolor duo elitr. No labore voluptua voluptua elit eros rebum ea invidunt justo sed iusto et sed dolor nulla aliquam.
+                        </div>
                     </MudCardContent>
+                    <MudCardActions>
+                        <MudButtonGroup>
+                            <MudIconButton Href="@("/styles/" + style.Id + "/edit")" Icon="@Icons.Filled.Edit" />
+                            <MudIconButton OnClick="async () => await DeleteAsync(style)" Color="Color.Warning" Icon="@Icons.Filled.Delete"/>
+                        </MudButtonGroup>
+                    </MudCardActions>
                 </MudCard>
             </MudItem>
         }
     </MudGrid>
 }
 
-@code {
+@code 
+{
     private bool _loading;
 
     private ICollection<Style>? _styles;
@@ -49,6 +63,30 @@ else
         _styles = await _stylesClient.GetAsync();
 
         _loading = false;
+    }
+
+    private async Task DeleteAsync(Style style)
+    {
+        var confirm = await _dialogService.ShowMessageBox("Warning", "Are you sure you want to delete this style?", yesText: "Delete", noText: "Cancel");
+
+        if (confirm is not true)
+        {
+            return;
+        }
+        
+        _loading = true;
+        
+        await _stylesClient.DeleteAsync(style.Id);
+
+        await OnInitializedAsync();
+        
+        _loading = false;
+    }
+
+    private void OpenEmailTemplate()
+    {
+        var uri = "https://outlook.office.com/?path=/mail/action/compose&to=AdamCogan@ssw.com.au&subject=Daily Scrum&body=Hi Adam,";
+        _jsRuntime.InvokeVoidAsync("open", uri, "_blank");
     }
 
 }

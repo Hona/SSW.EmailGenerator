@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace EmailGenerator.WebAPI.Models;
 

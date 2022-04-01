@@ -16,23 +16,16 @@ public class StylesController : Controller
         _context = context;
     }
 
-    [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType(typeof(List<Style>), (int)HttpStatusCode.OK)]
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         var output = await _context.Styles.ToListAsync();
-
-        if (!output.Any())
-        {
-            return NoContent();
-        }
-
         return Ok(output);
     }
 
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType(typeof(Style), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Style), StatusCodes.Status200OK)]
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -47,7 +40,7 @@ public class StylesController : Controller
     }
 
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType(typeof(Style), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(Style), StatusCodes.Status200OK)]
     [HttpGet("default")]
     public async Task<IActionResult> GetDefault()
     {
@@ -61,7 +54,7 @@ public class StylesController : Controller
         return Ok(output);
     }
 
-    [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Style style)
     {
@@ -71,26 +64,28 @@ public class StylesController : Controller
         return Created(new Uri($"/api/Styles/{output.Entity.Id}", UriKind.Relative), output.Entity.Id.ToString());
     }
 
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] Style style)
     {
-        var model = await _context.Styles.FirstOrDefaultAsync(x => x.Id == style.Id);
+        var model = await _context.Styles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == style.Id);
 
         if (model is null)
         {
             return NotFound();
         }
 
-        _context.Styles.Update(model);
+        _context.Styles.Update(style);
         await _context.SaveChangesAsync();
 
         return NoContent();
     }
 
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {

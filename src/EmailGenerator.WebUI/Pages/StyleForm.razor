@@ -1,0 +1,56 @@
+﻿@using EmailGenerator.WebApiClient
+@using Microsoft.AspNetCore.Components
+@inject StylesClient _stylesClient
+@inject NavigationManager _navigationManager
+
+@if (_loading)
+{
+    <MudProgressLinear Indeterminate Color="MudBlazor.Color.Primary" />
+}
+else
+{
+    <MudPaper Style="padding: 1rem; margin: 1rem 0">
+        <MudForm @bind-IsValid="@success" @bind-Errors="@errors" Model="Style" Val>
+            <MudTextField T="string" Label="Display Name" Required @bind-Text="@Style.DisplayName"/>
+            <MudTextField T="string" Label="Font" Required @bind-Text="@Style.Font" />
+                <MudNumericField @bind-Value="Style.HeadingSize" Label="Heading Size (px)" Variant="Variant.Text" Min="0" Max="128" />
+                <MudField Label="Heading color" Variant="Variant.Text">
+                    <input type="color" @bind-value="Style.HeadingColor"/><span class="ml-3">@Style.HeadingColor</span>
+                </MudField>            
+                <MudNumericField @bind-Value="Style.TextSize" Label="Text Size (px)" Variant="Variant.Text" Min="0" Max="128" />
+                <MudField Label="Text color" Variant="Variant.Text">
+                    <input type="color" @bind-value="Style.TextColor"/><span class="ml-3">@Style.TextColor</span>
+                </MudField>
+            <div class="d-flex align-center justify-space-between mt-6">
+                <MudCheckBox T="bool" Class="ml-n2" Label="Default" @bind-Checked="Style.IsDefault"/>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="OnSubmitAsync">@SubmitText</MudButton>
+            </div>
+        </MudForm>
+    </MudPaper>
+}
+
+@code 
+{
+    [Parameter]
+    public Style Style { get; set; } = new();
+    
+    [Parameter]
+    public EventCallback<Style> OnSuccess { get; set; }
+
+    [Parameter]
+    public string SubmitText { get; set; }
+
+    private bool _loading;
+
+    private bool success;
+    private string[] errors;
+
+    private async Task OnSubmitAsync()
+    {
+        _loading = true;
+
+        await OnSuccess.InvokeAsync(Style);
+        
+        _loading = false;
+    }
+}

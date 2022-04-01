@@ -12,6 +12,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 var services = builder.Services;
 
 services.AddMudServices();
+services.AddMudBlazorDialog();
 
 var apiClientName = "Api";
 var configureClient = new Action<HttpClient>(x =>
@@ -27,6 +28,5 @@ services.AddHttpClient<TemplatesClient>(apiClientName, configureClient);
 
 services.AddScoped<StylesClient>();
 services.AddScoped<TemplatesClient>();
-
 
 await builder.Build().RunAsync();

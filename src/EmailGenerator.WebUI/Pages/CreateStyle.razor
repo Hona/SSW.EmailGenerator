@@ -1,0 +1,37 @@
+﻿@page "/styles/create"
+@using EmailGenerator.WebApiClient
+
+@inject StylesClient _stylesClient
+@inject NavigationManager _navigationManager
+
+<MudText Typo="Typo.h3">New Style</MudText>
+
+<StyleForm Style="@_style" OnSuccess="CreateAsync" SubmitText="Create"/>
+
+@code 
+{
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private Style _style = new()
+    {
+        TextColor = "#000000",
+        HeadingColor = "#000000"
+    };
+    
+    private bool _loading;
+
+    private bool success;
+    private string[] errors;
+
+    private async Task CreateAsync(Style style)
+    {
+        _loading = true;
+        
+        _ = await _stylesClient.CreateAsync(style);
+        
+        _loading = false;
+        
+        _navigationManager.NavigateTo("/styles");
+    }
+}

@@ -26,8 +26,5 @@
 
     <Target Name="GenerateApiClientSourceCode" BeforeTargets="CoreCompile;PrepareResource">
         <Exec Command="$(NSwagExe_Net60) run nswag.json /variables:Configuration=$(Configuration),Output=EmailGeneratorClient.cs" />
-        <ItemGroup>
-            <Compile Include="EmailGeneratorClient.cs" />
-        </ItemGroup>
     </Target>
 </Project>

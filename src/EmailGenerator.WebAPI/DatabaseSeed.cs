@@ -30,7 +30,7 @@ public static class DatabaseSeed
         {
             Id = Guid.NewGuid(),
             DisplayName = "SSW",
-            Font = "OpenSans",
+            Font = "Open Sans",
             HeadingColor = Color.FromArgb(204, 65, 65),
             HeadingSize = 14,
             IsDefault = true,

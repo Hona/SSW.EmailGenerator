@@ -1,0 +1,39 @@
+﻿@page "/styles/{id:guid}/edit"
+@using EmailGenerator.WebApiClient
+
+@inject StylesClient _stylesClient
+
+<MudText Typo="Typo.h3">Edit Style</MudText>
+
+@if (_loading)
+{
+    <MudProgressLinear Indeterminate Color="MudBlazor.Color.Primary" />
+}
+else
+{
+    <StyleForm Style="@_style" OnSuccess="EditAsync" SubmitText="Save"/>
+}
+
+@code 
+{
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private Style _style;
+    
+    private bool _loading;
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        _loading = true;
+        
+        _style = await _stylesClient.GetByIdAsync(Id);
+
+        _loading = false;
+    }
+
+    private async Task EditAsync(Style style)
+    {
+        await _stylesClient.UpdateAsync(style);
+    }
+}
