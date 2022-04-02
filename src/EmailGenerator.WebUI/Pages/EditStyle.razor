@@ -2,6 +2,7 @@
 @using EmailGenerator.WebApiClient
 
 @inject StylesClient _stylesClient
+@inject NavigationManager _navigationManager
 
 <MudText Typo="Typo.h3">Edit Style</MudText>
 
@@ -35,5 +36,7 @@ else
     private async Task EditAsync(Style style)
     {
         await _stylesClient.UpdateAsync(style);
+        
+        _navigationManager.NavigateTo("/styles");
     }
 }

@@ -10,19 +10,19 @@
 else
 {
     <MudPaper Style="padding: 1rem; margin: 1rem 0">
-        <MudForm @bind-IsValid="@success" @bind-Errors="@errors" Model="Style" Val>
+        <MudForm @bind-IsValid="@success" @bind-Errors="@errors" Model="Style" @ref="_form">
             <MudTextField T="string" Label="Display Name" Required @bind-Text="@Style.DisplayName"/>
             <MudTextField T="string" Label="Font" Required @bind-Text="@Style.Font" />
-                <MudNumericField @bind-Value="Style.HeadingSize" Label="Heading Size (px)" Variant="Variant.Text" Min="0" Max="128" />
-                <MudField Label="Heading color" Variant="Variant.Text">
+                <MudNumericField @bind-Value="Style.HeadingSize" Required Label="Heading Size (px)" Variant="Variant.Text" Min="0" Max="128" />
+                <MudField Label="Heading color" Variant="Variant.Text" Required>
                     <input type="color" @bind-value="Style.HeadingColor"/><span class="ml-3">@Style.HeadingColor</span>
                 </MudField>            
-                <MudNumericField @bind-Value="Style.TextSize" Label="Text Size (px)" Variant="Variant.Text" Min="0" Max="128" />
-                <MudField Label="Text color" Variant="Variant.Text">
+                <MudNumericField @bind-Value="Style.TextSize" Required Label="Text Size (px)" Variant="Variant.Text" Min="0" Max="128" />
+                <MudField Label="Text color" Variant="Variant.Text" Required>
                     <input type="color" @bind-value="Style.TextColor"/><span class="ml-3">@Style.TextColor</span>
                 </MudField>
             <div class="d-flex align-center justify-space-between mt-6">
-                <MudCheckBox T="bool" Class="ml-n2" Label="Default" @bind-Checked="Style.IsDefault"/>
+                <MudCheckBox T="bool" Class="ml-n2" Label="Default" @bind-Checked="Style.IsDefault" Required/>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="OnSubmitAsync">@SubmitText</MudButton>
             </div>
         </MudForm>
@@ -44,6 +44,18 @@ else
 
     private bool success;
     private string[] errors;
+
+    private MudForm? _form;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_form is null)
+        {
+            return;
+        }
+        
+        await _form.Validate();
+    }
 
     private async Task OnSubmitAsync()
     {

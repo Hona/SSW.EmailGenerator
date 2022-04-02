@@ -69,11 +69,10 @@ public class StylesController : Controller
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] Style style)
     {
-        var model = await _context.Styles
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == style.Id);
+        var modelExists = await _context.Styles
+            .AnyAsync(x => x.Id == style.Id);
 
-        if (model is null)
+        if (!modelExists)
         {
             return NotFound();
         }
