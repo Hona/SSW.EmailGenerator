@@ -20,15 +20,16 @@
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="_containerWidth" Class="py-8">
+            <NavBreadcrumbs />
             @Body
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 
-@code 
+@code
 {
     private MaxWidth _containerWidth = MaxWidth.Large;
-    
+
     private MudTheme _theme = new()
     {
         Palette = new Palette()
@@ -40,7 +41,7 @@
             Background = "#eeeeee"
         }
     };
-    
+
     bool _drawerOpen = true;
 
     void DrawerToggle()

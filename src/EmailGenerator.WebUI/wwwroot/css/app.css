@@ -26,3 +26,7 @@
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.mud-typography-h3 {
+    padding-bottom: 1rem;
+}

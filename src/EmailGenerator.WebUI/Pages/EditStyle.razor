@@ -3,31 +3,37 @@
 
 @inject StylesClient _stylesClient
 @inject NavigationManager _navigationManager
+@inject BreadcrumbService _breadcrumbService
 
 <MudText Typo="Typo.h3">Edit Style</MudText>
 
 @if (_loading)
 {
-    <MudProgressLinear Indeterminate Color="MudBlazor.Color.Primary" />
+    <MudProgressLinear Indeterminate Color="Color.Primary" />
 }
 else
 {
     <StyleForm Style="@_style" OnSuccess="EditAsync" SubmitText="Save"/>
 }
 
-@code 
+@code
 {
     [Parameter]
     public Guid Id { get; set; }
 
     private Style _style;
-    
+
     private bool _loading;
-    
+
+    protected override void OnAfterRender(bool firstRender) => _breadcrumbService.SetCurrent(
+        new BreadcrumbItem("Styles", "/styles"),
+        new BreadcrumbItem($"{_style?.DisplayName}", null, true),
+        new BreadcrumbItem("Edit", $"/styles/{_style?.Id}/edit"));
+
     protected override async Task OnParametersSetAsync()
     {
         _loading = true;
-        
+
         _style = await _stylesClient.GetByIdAsync(Id);
 
         _loading = false;
@@ -36,7 +42,7 @@ else
     private async Task EditAsync(Style style)
     {
         await _stylesClient.UpdateAsync(style);
-        
+
         _navigationManager.NavigateTo("/styles");
     }
 }

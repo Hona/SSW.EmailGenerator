@@ -3,6 +3,8 @@
 @inject StylesClient _stylesClient
 @inject NavigationManager _navigationManager
 
+@inject ILogger<StyleForm> _logger
+
 @if (_loading)
 {
     <MudProgressLinear Indeterminate Color="MudBlazor.Color.Primary" />
@@ -16,24 +18,24 @@ else
                 <MudNumericField @bind-Value="Style.HeadingSize" Required Label="Heading Size (px)" Variant="Variant.Text" Min="0" Max="128" />
                 <MudField Label="Heading color" Variant="Variant.Text" Required>
                     <input type="color" @bind-value="Style.HeadingColor"/><span class="ml-3">@Style.HeadingColor</span>
-                </MudField>            
+                </MudField>
                 <MudNumericField @bind-Value="Style.TextSize" Required Label="Text Size (px)" Variant="Variant.Text" Min="0" Max="128" />
                 <MudField Label="Text color" Variant="Variant.Text" Required>
                     <input type="color" @bind-value="Style.TextColor"/><span class="ml-3">@Style.TextColor</span>
                 </MudField>
             <div class="d-flex align-center justify-space-between mt-6">
-                <MudCheckBox T="bool" Class="ml-n2" Label="Default" @bind-Checked="Style.IsDefault" Required/>
+                <MudCheckBox T="bool" Class="ml-n2" Label="Default" @bind-Checked="Style.IsDefault"/>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="OnSubmitAsync">@SubmitText</MudButton>
             </div>
         </MudForm>
     </MudPaper>
 }
 
-@code 
+@code
 {
     [Parameter]
     public Style Style { get; set; } = new();
-    
+
     [Parameter]
     public EventCallback<Style> OnSuccess { get; set; }
 
@@ -47,22 +49,36 @@ else
 
     private MudForm? _form;
 
-    protected override async Task OnParametersSetAsync()
+    private bool _shouldValidateAfterRender;
+
+    protected override void OnParametersSet()
     {
-        if (_form is null)
+        _logger.LogInformation("StyleForm | OnParametersSet");
+
+        // Can only validate once rendered
+        _shouldValidateAfterRender = true;
+
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _logger.LogInformation("StyleForm | OnAfterRenderAsync");
+        if (_shouldValidateAfterRender && _form is not null && !firstRender)
         {
-            return;
+            _logger.LogInformation("StyleForm | OnAfterRenderAsync | Validating");
+            await _form.Validate();
+            _shouldValidateAfterRender = false;
         }
-        
-        await _form.Validate();
     }
 
     private async Task OnSubmitAsync()
     {
+        _logger.LogInformation("StyleForm | OnSubmitAsync");
         _loading = true;
 
         await OnSuccess.InvokeAsync(Style);
-        
+
         _loading = false;
     }
 }

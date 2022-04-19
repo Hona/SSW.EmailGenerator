@@ -1,0 +1,20 @@
+﻿@inject BreadcrumbService _breadcrumbService
+
+@implements IDisposable
+
+<MudBreadcrumbs Items="Items" />
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        _breadcrumbService.Changed += StateHasChanged;
+    }
+
+    private List<BreadcrumbItem> Items => _breadcrumbService.Current;
+
+    public void Dispose()
+    {
+        _breadcrumbService.Changed -= StateHasChanged;
+    }
+}

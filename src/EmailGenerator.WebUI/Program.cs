@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using EmailGenerator.WebUI;
 using MudBlazor.Services;
 using EmailGenerator.WebApiClient;
+using EmailGenerator.WebUI.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -28,5 +29,9 @@ services.AddHttpClient<TemplatesClient>(apiClientName, configureClient);
 
 services.AddScoped<StylesClient>();
 services.AddScoped<TemplatesClient>();
+
+services.AddSingleton<BreadcrumbService>();
+
+services.AddLogging();
 
 await builder.Build().RunAsync();

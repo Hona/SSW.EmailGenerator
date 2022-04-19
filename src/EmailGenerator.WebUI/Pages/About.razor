@@ -1,5 +1,12 @@
 ﻿@page "/about"
 
+@inject BreadcrumbService _breadcrumbService
+
 <PageTitle>About</PageTitle>
 
 <MudText Typo="Typo.h3">About</MudText>
+
+@code
+{
+    protected override void OnAfterRender(bool firstRender) => _breadcrumbService.Clear();
+}

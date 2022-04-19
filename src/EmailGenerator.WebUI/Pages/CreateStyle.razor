@@ -3,12 +3,13 @@
 
 @inject StylesClient _stylesClient
 @inject NavigationManager _navigationManager
+@inject BreadcrumbService _breadcrumbService
 
 <MudText Typo="Typo.h3">New Style</MudText>
 
 <StyleForm Style="@_style" OnSuccess="CreateAsync" SubmitText="Create"/>
 
-@code 
+@code
 {
     [Parameter]
     public Guid Id { get; set; }
@@ -18,7 +19,7 @@
         TextColor = "#000000",
         HeadingColor = "#000000"
     };
-    
+
     private bool _loading;
 
     private bool success;
@@ -27,11 +28,15 @@
     private async Task CreateAsync(Style style)
     {
         _loading = true;
-        
+
         _ = await _stylesClient.CreateAsync(style);
-        
+
         _loading = false;
-        
+
         _navigationManager.NavigateTo("/styles");
     }
+
+    protected override void OnAfterRender(bool firstRender) => _breadcrumbService.SetCurrent(
+        new BreadcrumbItem("Styles", "/styles"),
+            new BreadcrumbItem("New Style", "/styles/create"));
 }

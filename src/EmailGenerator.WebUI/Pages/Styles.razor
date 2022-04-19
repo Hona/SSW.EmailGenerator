@@ -7,6 +7,7 @@
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @inject IDialogService _dialogService
+@inject BreadcrumbService _breadcrumbService
 
 <PageTitle>Styles</PageTitle>
 
@@ -50,7 +51,7 @@ else
     </MudGrid>
 }
 
-@code 
+@code
 {
     private bool _loading;
 
@@ -59,11 +60,13 @@ else
     protected override async Task OnInitializedAsync()
     {
         _loading = true;
-        
+
         _styles = await _stylesClient.GetAsync();
 
         _loading = false;
     }
+
+    protected override void OnAfterRender(bool firstRender) => _breadcrumbService.Clear();
 
     private async Task DeleteAsync(Style style)
     {
@@ -73,13 +76,13 @@ else
         {
             return;
         }
-        
+
         _loading = true;
-        
+
         await _stylesClient.DeleteAsync(style.Id);
 
         await OnInitializedAsync();
-        
+
         _loading = false;
     }
 
