@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailGenerator.WebAPI", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailGenerator.WebApiClient", "src\EmailGenerator.WebApiClient\EmailGenerator.WebApiClient.csproj", "{187296B3-34CF-4616-910D-D0A250E6E312}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailGenerator.WebAPI.Tests", "src\EmailGenerator.WebAPI.Tests\EmailGenerator.WebAPI.Tests.csproj", "{337417D5-1F14-4B41-BA45-E858E859D0A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,7 @@ Global
 		{54E976FB-4698-4749-8AFD-6E622D2C91B7} = {332D79F2-11EF-46B0-BCCF-D96463A23EEA}
 		{6433F6DB-62C2-4245-9AB5-4E1A2B4BD575} = {332D79F2-11EF-46B0-BCCF-D96463A23EEA}
 		{187296B3-34CF-4616-910D-D0A250E6E312} = {332D79F2-11EF-46B0-BCCF-D96463A23EEA}
+		{337417D5-1F14-4B41-BA45-E858E859D0A3} = {332D79F2-11EF-46B0-BCCF-D96463A23EEA}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{54E976FB-4698-4749-8AFD-6E622D2C91B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -31,5 +34,9 @@ Global
 		{187296B3-34CF-4616-910D-D0A250E6E312}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{187296B3-34CF-4616-910D-D0A250E6E312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{187296B3-34CF-4616-910D-D0A250E6E312}.Release|Any CPU.Build.0 = Release|Any CPU
+		{337417D5-1F14-4B41-BA45-E858E859D0A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{337417D5-1F14-4B41-BA45-E858E859D0A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{337417D5-1F14-4B41-BA45-E858E859D0A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{337417D5-1F14-4B41-BA45-E858E859D0A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

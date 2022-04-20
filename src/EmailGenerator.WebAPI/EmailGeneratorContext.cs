@@ -5,6 +5,8 @@ namespace EmailGenerator.WebAPI;
 
 public class EmailGeneratorContext : DbContext
 {
+    private readonly bool _inMemory;
+    
     public DbSet<Template> Templates { get; set; }
     public DbSet<TemplateRecipient> TemplateRecipients { get; set; }
     public DbSet<TemplateSection> TemplateSections { get; set; }
@@ -12,18 +14,42 @@ public class EmailGeneratorContext : DbContext
 
     public string DbPath { get; }
 
-    public EmailGeneratorContext()
+    public EmailGeneratorContext() : this(false) { }
+
+    public EmailGeneratorContext(bool inMemory)
     {
-        var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        DbPath = Path.Join(path, "emailgenerator.db");
+        _inMemory = inMemory;
         
-        Database.EnsureCreated();
+        if (inMemory)
+        {
+            // No setup needed
+        }
+        else
+        {
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            DbPath = Path.Join(path, "emailgenerator.db");
+        }
+
+        if (Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+        {
+            Database.EnsureCreated();
+            Database.Migrate();
+        }
     }
     
     // The following configures EF to create a Sqlite database file in the
     // special "local" folder for your platform.
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite($"Data Source={DbPath}");
+    {
+        if (_inMemory)
+        {
+            options.UseInMemoryDatabase(databaseName: nameof(EmailGeneratorContext));
+        }
+        else
+        {
+            options.UseSqlite($"Data Source={DbPath}");
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
